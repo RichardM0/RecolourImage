@@ -1,0 +1,79 @@
+import java.io.*;
+import java.net.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import javax.imageio.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.lang.Thread;
+import javax.swing.*;
+import java.util.Random;
+
+
+public class ColorLoader extends JPanel{
+    private BufferedImage img, originalImg;
+    private int width, height, curWidth, curHeight, imgX, imgY;
+    public ColorLoader(){
+        loadImage(new File("images/smallpanda.jpg"));
+    }
+    public ColorLoader(File f){
+        loadImage(f);
+    }
+    public void loadImage(File f) {
+        try {
+            img = ImageIO.read(f);
+            originalImg = ImageIO.read(f);
+            width = img.getWidth();
+            curWidth = width;
+            height = img.getHeight();
+            curHeight = height;
+            imgX = 300-curWidth/2;
+            imgY = 250-curHeight/2;
+        } catch (IOException e) {
+            System.out.println("Image could not be read");
+        }
+    }
+    public void changeColor(int r, int g, int b) {
+        for (int x = 0; x < curWidth; x++) {
+            for (int y = 0; y < curHeight; y++) {
+                int rgb = img.getRGB(x, y);
+                Color color = new Color(rgb, true);
+                if (isGreen(color)) {
+                    int red = color.getRed();
+                    int green = color.getGreen();
+                    int blue = color.getBlue();
+                    int fact = Math.max(red, Math.max(green, blue));
+                    int newRed = (r*fact)/255;  
+                    int newGreen = (g*fact)/255;
+                    int newBlue = (b*fact)/255;
+
+                    Color newColor = new Color(newRed, newGreen, newBlue, color.getAlpha());
+                    img.setRGB(x, y, newColor.getRGB());
+                }
+
+            }
+        }
+        repaint();
+    }
+    public boolean isGreen(Color color){
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+
+        return green > 1.2*red && green > 1.2*blue;
+    }
+    public void updateImg()
+    {
+        repaint();
+    }
+    public void toOriginalImg(){
+        img = originalImg;
+        repaint();
+    }
+    public void paint(Graphics g){    
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(img, imgX, imgY, curWidth, curHeight, null);
+    }
+}
