@@ -1,0 +1,121 @@
+
+import java.awt.event.*;
+import java.awt.Color;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JButton;
+import javax.swing.ButtonGroup;
+
+public class ColorMain extends JFrame implements ItemListener, ActionListener
+{
+   /*
+    * Static variables for class BallFrame
+    * Each individual Java Swing element
+    */
+   public static JFrame frame;
+   private static JMenuBar menuBar;
+   private static JMenu colorMenu;
+   private static JRadioButtonMenuItem blue, red, yellow, linear;
+   private static JPanel subPanel; 
+   private static JButton save, select;
+   private static ButtonGroup colorGroup;
+   private static ColorLoader L;
+   /*
+   * constructor for objects of BallFrame
+   * Creates entire window
+   * Create menu with speed, color, and motion options
+   * Add the BallPanel with the actual moving balls
+   * Have a subpanel with buttons save select and Add Balls to change balls
+   * Add frame to the window
+   */
+   public ColorMain()
+   {
+        frame = new JFrame( "Color Switcher" );
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+        menuBar = new JMenuBar();
+
+
+        colorMenu = new JMenu("Color");
+
+        colorGroup = new ButtonGroup();
+        colorMenu.addSeparator();
+        
+        blue = new JRadioButtonMenuItem("Blue");
+        red = new JRadioButtonMenuItem("Red");
+        yellow = new JRadioButtonMenuItem("Yellow");
+
+        blue.addItemListener(this);
+        red.addItemListener(this);
+        yellow.addItemListener(this);
+ 
+        colorGroup.add(blue);
+        colorGroup.add(red);
+        colorGroup.add(yellow);
+
+        colorMenu.add(blue);
+        colorMenu.add(red);
+        colorMenu.add(yellow);
+
+        menuBar.add(colorMenu);
+ 
+        subPanel = new JPanel();
+        subPanel.setBackground(Color.gray);
+        
+        select = new JButton("select");
+        save = new JButton("save");
+ 
+        save.addActionListener(this);
+        select.addActionListener(this);
+        
+        subPanel.add(select);
+        subPanel.add(save);
+        
+        frame.setJMenuBar(menuBar);
+        L = new ColorLoader();
+        frame.add(L, BorderLayout.CENTER);
+        frame.getContentPane().add(subPanel, BorderLayout.SOUTH);
+
+        frame.setSize( 600, 600 ); 
+        frame.setVisible( true );
+   }
+   /*
+    * main Method
+    * Allows the user to access and view the GUI
+    */
+   public static void main( String args[] )
+   {
+        ColorMain r = new ColorMain();
+   }
+   public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == select){
+            L.toOriginalImg();
+            System.out.println("a");
+        }
+        else if (e.getSource() == save){
+            ;
+        }
+   }
+   /*
+    * itemStateChanged method
+    * Checks which menu item was last changed or chosen
+    * Changes speed to low, medium, or high
+    * Changes color to blue, red, or yellow
+    * Changes motion to linear, circular, parabolic, sinusoidal, or ellipse.
+    */
+   public void itemStateChanged(ItemEvent e){
+        if (e.getSource() == blue){
+            ;
+        }
+        else if (e.getSource() == red){
+            L.changeColor(255, 0, 0);
+        }
+        else if (e.getSource() == yellow){
+            L.changeColor(255, 255, 0);
+        }
+   }
+}
