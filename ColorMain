@@ -94,28 +94,20 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == select){
             L.toOriginalImg();
-            System.out.println("a");
         }
         else if (e.getSource() == save){
             ;
         }
    }
-   /*
-    * itemStateChanged method
-    * Checks which menu item was last changed or chosen
-    * Changes speed to low, medium, or high
-    * Changes color to blue, red, or yellow
-    * Changes motion to linear, circular, parabolic, sinusoidal, or ellipse.
-    */
    public void itemStateChanged(ItemEvent e){
-        if (e.getSource() == blue){
-            ;
-        }
-        else if (e.getSource() == red){
-            L.changeColor(255, 0, 0);
-        }
-        else if (e.getSource() == yellow){
-            L.changeColor(255, 255, 0);
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (e.getSource() == red) {
+                L.changeColor(255, 0, 0);
+            } else if (e.getSource() == yellow) {
+                L.changeColor(255, 255, 0);
+            } else if (e.getSource() == blue) {
+                L.changeColor(0, 0, 255);
+            }
         }
    }
 }
