@@ -15,7 +15,7 @@ public class ColorLoader extends JPanel{
     private BufferedImage img, originalImg;
     private int width, height, curWidth, curHeight, imgX, imgY;
     public ColorLoader(){
-        loadImage(new File("images/car2.jpg"));
+        loadImage(new File("images/car.jpeg"));
     }
     public ColorLoader(File f){
         loadImage(f);
@@ -60,8 +60,10 @@ public class ColorLoader extends JPanel{
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
-
-        return green > 1.08*red && green > 1.08*blue;
+    
+        int brightness = (red + green + blue) / 3;
+    
+        return green > red + 10 && green > blue + 10 && brightness < 200;
     }
     public void updateImg()
     {
