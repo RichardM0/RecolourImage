@@ -19,7 +19,7 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
    public static JFrame frame;
    private static JMenuBar menuBar;
    private static JMenu colorMenu;
-   private static JRadioButtonMenuItem blue, red, yellow, linear;
+   private static JRadioButtonMenuItem blue, red, yellow, magenta;
    private static JPanel subPanel; 
    private static JButton save, select;
    private static ButtonGroup colorGroup;
@@ -48,18 +48,22 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         blue = new JRadioButtonMenuItem("Blue");
         red = new JRadioButtonMenuItem("Red");
         yellow = new JRadioButtonMenuItem("Yellow");
+        magenta = new JRadioButtonMenuItem("Magenta");
 
         blue.addItemListener(this);
         red.addItemListener(this);
         yellow.addItemListener(this);
+        magenta.addItemListener(this);
  
         colorGroup.add(blue);
         colorGroup.add(red);
         colorGroup.add(yellow);
+        colorGroup.add(magenta);
 
         colorMenu.add(blue);
         colorMenu.add(red);
         colorMenu.add(yellow);
+        colorMenu.add(magenta);
 
         menuBar.add(colorMenu);
  
@@ -107,6 +111,8 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
                 L.changeColor(255, 255, 0);
             } else if (e.getSource() == blue) {
                 L.changeColor(0, 0, 255);
+            } else if (e.getSource() == magenta) {
+                L.changeColor(255, 0, 255);
             }
         }
    }
