@@ -68,7 +68,11 @@ public class ColorLoader extends JPanel{
         repaint();
     }
     public void toOriginalImg(){
-        img = originalImg;
+        img = new BufferedImage(originalImg.getWidth(), originalImg.getHeight(), originalImg.getType());
+        Graphics g = img.getGraphics();
+        g.drawImage(originalImg, 0, 0, null);
+        g.dispose();
+
         repaint();
     }
     public void paint(Graphics g){    
