@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 
 public class ColorMain extends JFrame implements ItemListener, ActionListener
 {
@@ -21,7 +22,7 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
    private static JMenu colorMenu;
    private static JRadioButtonMenuItem blue, red, yellow, magenta;
    private static JPanel subPanel; 
-   private static JButton save, select;
+   private static JButton save, revert, selectColor, chooseImg;
    private static ButtonGroup colorGroup;
    private static ColorLoader L;
    /*
@@ -70,14 +71,17 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         subPanel = new JPanel();
         subPanel.setBackground(Color.gray);
         
-        select = new JButton("select");
-        save = new JButton("save");
- 
-        save.addActionListener(this);
-        select.addActionListener(this);
+        revert = new JButton("Revert");
+        save = new JButton("Save");
+        chooseImg = new JButton("Choose Image");
         
-        subPanel.add(select);
+        revert.addActionListener(this);
+        save.addActionListener(this);
+        chooseImg.addActionListener(this);
+        
+        subPanel.add(revert);
         subPanel.add(save);
+        subPanel.add(chooseImg);
         
         frame.setJMenuBar(menuBar);
         L = new ColorLoader();
@@ -96,11 +100,19 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         ColorMain r = new ColorMain();
    }
    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == select){
+        if (e.getSource() == revert){
             L.toOriginalImg();
         }
         else if (e.getSource() == save){
             ;
+        }
+        else if (e.getSource() == chooseImg){
+            JFileChooser select = new JFileChooser("images/");
+            int status = select.showOpenDialog(frame);
+            if (status == JFileChooser.APPROVE_OPTION) {
+                L.loadImage(select.getSelectedFile());
+                L.updateImg();
+            }
         }
    }
    public void itemStateChanged(ItemEvent e){
@@ -110,7 +122,7 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
             } else if (e.getSource() == yellow) {
                 L.changeColor(255, 255, 0);
             } else if (e.getSource() == blue) {
-                L.changeColor(0, 0, 255);
+                L.changeColor(47, 141, 255);
             } else if (e.getSource() == magenta) {
                 L.changeColor(255, 0, 255);
             }
