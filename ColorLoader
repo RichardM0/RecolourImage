@@ -13,26 +13,36 @@ import java.util.Random;
 
 public class ColorLoader extends JPanel{
     private BufferedImage img, originalImg;
-    private int width, height, curWidth, curHeight, imgX, imgY;
+    private int curWidth, curHeight, imgX, imgY;
+    private File curImage;
     public ColorLoader(){
         loadImage(new File("images/car.jpeg"));
     }
-    public ColorLoader(File f){
-        loadImage(f);
-    }
     public void loadImage(File f) {
         try {
+            curImage = f;
             img = ImageIO.read(f);
             originalImg = ImageIO.read(f);
-            width = img.getWidth();
-            curWidth = width;
-            height = img.getHeight();
-            curHeight = height;
+            curWidth = img.getWidth();
+            curHeight = img.getHeight();
             imgX = 300-curWidth/2;
             imgY = 250-curHeight/2;
+            resize(300/Double.valueOf(curWidth), 300/Double.valueOf(curHeight));
         } catch (IOException e) {
             System.out.println("Image could not be read");
         }
+    }
+    public void resize(double ws, double hs){
+        double scale = Math.min(ws, hs);
+        curWidth = (int)(Double.valueOf(curWidth)*scale);
+        curHeight = (int)(Double.valueOf(curHeight)*scale);
+        
+        BufferedImage resizedImage = new BufferedImage(curWidth, curHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(img, 0, 0 , curWidth, curHeight, null);
+        g.dispose();
+        img = resizedImage;
+        repaint();
     }
     public void changeColor(int r, int g, int b) {
         for (int x = 0; x < curWidth; x++) {
@@ -63,21 +73,20 @@ public class ColorLoader extends JPanel{
     
         int brightness = (red + green + blue) / 3;
     
-        return green > red + 10 && green > blue + 10 && brightness < 200;
+        return green > red + 7 && green > blue + 7 && brightness < 200;
     }
     public void updateImg()
     {
         repaint();
     }
+    public BufferedImage getImg(){
+        return img;
+    }
     public void toOriginalImg(){
-        img = new BufferedImage(originalImg.getWidth(), originalImg.getHeight(), originalImg.getType());
-        Graphics g = img.getGraphics();
-        g.drawImage(originalImg, 0, 0, null);
-        g.dispose();
-
+        loadImage(curImage);
         repaint();
     }
-    public void paint(Graphics g){    
+    public void paint(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(img, imgX, imgY, curWidth, curHeight, null);
