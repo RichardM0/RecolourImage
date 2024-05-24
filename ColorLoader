@@ -27,8 +27,11 @@ public class ColorLoader extends JPanel{
             curHeight = img.getHeight();
             imgX = 300-curWidth/2;
             imgY = 250-curHeight/2;
-            resize(300/Double.valueOf(curWidth), 300/Double.valueOf(curHeight));
-        } catch (IOException e) {
+            if(curWidth>300 || curHeight>300){
+                resize(300/Double.valueOf(curWidth), 300/Double.valueOf(curHeight));
+            }
+        }
+        catch (IOException e) {
             System.out.println("Image could not be read");
         }
     }
