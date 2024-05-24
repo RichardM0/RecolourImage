@@ -91,7 +91,7 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         frame.add(L, BorderLayout.CENTER);
         frame.getContentPane().add(subPanel, BorderLayout.SOUTH);
 
-        frame.setSize( 600, 600 ); 
+        frame.setSize( 900, 900 ); 
         frame.setVisible( true );
    }
    /*
