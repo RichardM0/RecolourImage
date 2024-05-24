@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.lang.Thread;
 import javax.swing.*;
 import java.util.Random;
-
 public class ColorLoader extends JPanel{
     private BufferedImage img, originalImg;
     private int curWidth, curHeight, imgX, imgY;
