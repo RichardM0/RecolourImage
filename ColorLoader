@@ -11,10 +11,10 @@ import javax.swing.*;
 import java.util.Random;
 public class ColorLoader extends JPanel{
     private BufferedImage img, originalImg;
-    private int curWidth, curHeight, imgX, imgY;
+    private int curWidth, curHeight;
     private File curImage;
     public ColorLoader(){
-        loadImage(new File("images/car.jpeg"));
+        loadImage(new File("images/car.jpg"));
     }
     public void loadImage(File f) {
         try {
@@ -23,8 +23,6 @@ public class ColorLoader extends JPanel{
             originalImg = ImageIO.read(f);
             curWidth = img.getWidth();
             curHeight = img.getHeight();
-            imgX = 300-curWidth/2;
-            imgY = 250-curHeight/2;
             if(curWidth>300 || curHeight>300){
                 resize(300/Double.valueOf(curWidth), 300/Double.valueOf(curHeight));
             }
@@ -71,10 +69,11 @@ public class ColorLoader extends JPanel{
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
-    
-        int brightness = (red + green + blue) / 3;
-    
-        return green > red + 7 && green > blue + 7 && brightness < 200;
+        boolean monochrome = Math.max(Math.abs(red-green), Math.max(Math.abs(red-blue), Math.abs(blue-green))) <= 5;
+        if(monochrome){
+            return false;
+        }
+        return green > red+12 && green > blue+12;
     }
     public void updateImg()
     {
@@ -90,6 +89,8 @@ public class ColorLoader extends JPanel{
     public void paint(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(img, imgX, imgY, curWidth, curHeight, null);
+        int imgX = ColorMain.frame.getWidth()/2;
+        int imgY = ColorMain.frame.getHeight()/2-2*curHeight/3;
+        g2d.drawImage(img, imgX-curWidth/2, imgY, curWidth, curHeight, null);
     }
 }
