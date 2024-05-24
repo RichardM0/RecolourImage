@@ -10,6 +10,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+import java.io.File;
+import javax.imageio.*;
+import java.awt.image.BufferedImage;
 
 public class ColorMain extends JFrame implements ItemListener, ActionListener
 {
@@ -42,7 +45,6 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
 
 
         colorMenu = new JMenu("Color");
-
         colorGroup = new ButtonGroup();
         colorMenu.addSeparator();
         
@@ -55,12 +57,12 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         red.addItemListener(this);
         yellow.addItemListener(this);
         magenta.addItemListener(this);
- 
+
         colorGroup.add(blue);
         colorGroup.add(red);
         colorGroup.add(yellow);
         colorGroup.add(magenta);
-
+        
         colorMenu.add(blue);
         colorMenu.add(red);
         colorMenu.add(yellow);
@@ -74,6 +76,7 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
         revert = new JButton("Revert");
         save = new JButton("Save");
         chooseImg = new JButton("Choose Image");
+        
         
         revert.addActionListener(this);
         save.addActionListener(this);
@@ -99,12 +102,23 @@ public class ColorMain extends JFrame implements ItemListener, ActionListener
    {
         ColorMain r = new ColorMain();
    }
+   public void saveImage(File image) {
+        BufferedImage img = L.getImg();
+         try {
+            ImageIO.write(img, "png", image);
+        } catch (Exception e) {
+            System.out.println("Image could not be read");
+        }
+    }
    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == revert){
             L.toOriginalImg();
         }
         else if (e.getSource() == save){
-            ;
+            JFileChooser chooser = new JFileChooser("./images");
+            if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+               saveImage(chooser.getSelectedFile());
+            }
         }
         else if (e.getSource() == chooseImg){
             JFileChooser select = new JFileChooser("images/");
